@@ -1,25 +1,26 @@
 import { AppState, define } from "../utils.ts";
 
 export type ScopeState = { scope: Scope };
-export type Scope = "full" | Set<string>;
-type Allow = { decision: "allow"; scope: Scope };
-type Deny = { decision: "deny" };
-export type Decision = Allow | Deny;
 
-const isAllowed = (decision: Decision): decision is Allow =>
-  decision.decision === "allow";
+type Scope = "full" | Set<string>;
+
+type Allow = { result: "allow"; scope: Scope };
+
+type Deny = { result: "deny" };
+
+type Decision = Allow | Deny;
 
 export type AuthzEngine = (state: AppState) => Decision | Promise<Decision>;
 
 export function authMiddleware(
-  path: string,
+  protectionPath: string,
   decider: AuthzEngine,
 ) {
   return define.middleware(
     async (ctx) => {
-      if (ctx.url.pathname.startsWith(path)) {
+      if (ctx.url.pathname.startsWith(protectionPath)) {
         const decision = await decider(ctx.state);
-        if (isAllowed(decision)) {
+        if (decision.result === "allow") {
           ctx.state.scope = decision.scope;
           return ctx.next();
         } else {

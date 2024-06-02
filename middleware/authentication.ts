@@ -6,6 +6,7 @@ import { AuthenticationConfig } from "../config.ts";
 export type AuthState = {
   authn: Authentication;
 };
+
 export type Authentication = {
   memberId?: string;
   tenantId?: string;

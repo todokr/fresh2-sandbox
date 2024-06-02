@@ -12,17 +12,17 @@ const authzEngine: AuthzEngine = (state: AppState) => {
 
   if (memberId === "admin") {
     return {
-      decision: "allow",
+      result: "allow",
       scope: "full",
     };
   } else if (memberId === "operator1") {
     return {
-      decision: "allow",
+      result: "allow",
       scope: new Set(["A", "B"]),
     };
   } else if (memberId === "operator2") {
     return {
-      decision: "allow",
+      result: "allow",
       scope: new Set(["C"]),
     };
   } else {
