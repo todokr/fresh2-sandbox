@@ -1,0 +1,6 @@
+
+authentication:
+  cookie:
+    name: "session"
+    maxAge: 86400
+
